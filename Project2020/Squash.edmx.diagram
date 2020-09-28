@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="38a4f5e4d6734a7a8509557709477c2c" Name="Diagram1">
+        <EntityTypeShape EntityType="ProjectModel.ASSISTANT" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectModel.BACKUP_DATA" Width="1.5" PointX="3" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectModel.BOOKING" Width="1.5" PointX="7.5" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectModel.CLIENT" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectModel.COURT" Width="1.5" PointX="5.25" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectModel.EVENT" Width="1.5" PointX="5.25" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectModel.REGISTER" Width="1.5" PointX="3" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectModel.TRANSACTION" Width="1.5" PointX="3" PointY="5" IsExpanded="true" />
+        <AssociationConnector Association="ProjectModel.FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectModel.FK2" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectModel.FK6" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectModel.FK7" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectModel.FK8" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectModel.FK3" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectModel.FK4" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectModel.FK5" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

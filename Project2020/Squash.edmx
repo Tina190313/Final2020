@@ -1,0 +1,570 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ProjectModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ASSISTANT">
+          <Key>
+            <PropertyRef Name="Assistant_ID" />
+          </Key>
+          <Property Name="Assistant_ID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Assistant_Name" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Assistant_LastName" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Assistant_RSA_ID" Type="varchar" MaxLength="13" Nullable="false" />
+          <Property Name="Assistant_Email" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="Assistant_PhoneNumber" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Assistant_Date_Appointed" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BACKUP_DATA">
+          <Key>
+            <PropertyRef Name="Backup_ID" />
+          </Key>
+          <Property Name="Backup_ID" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Assistant_ID" Type="varchar" MaxLength="20" />
+          <Property Name="Backup_Time" Type="time" Precision="7" />
+          <Property Name="Backup_Date" Type="date" />
+        </EntityType>
+        <EntityType Name="BOOKING">
+          <Key>
+            <PropertyRef Name="Booking_Number" />
+          </Key>
+          <Property Name="Booking_Number" Type="int" Nullable="false" />
+          <Property Name="Client_ID" Type="varchar" MaxLength="20" />
+          <Property Name="Court_Number" Type="int" />
+          <Property Name="Event_Number" Type="int" />
+          <Property Name="Number_Of_Bookings_Per_day" Type="int" />
+        </EntityType>
+        <EntityType Name="CLIENT">
+          <Key>
+            <PropertyRef Name="Client_ID" />
+          </Key>
+          <Property Name="Client_ID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Client_Name" Type="varchar" MaxLength="30" />
+          <Property Name="Client_LastName" Type="varchar" MaxLength="30" />
+          <Property Name="Client_Email" Type="varchar" MaxLength="40" />
+          <Property Name="Client_PhoneNumber" Type="varchar" MaxLength="10" />
+          <Property Name="Client_Date_Joined" Type="date" />
+        </EntityType>
+        <EntityType Name="COURT">
+          <Key>
+            <PropertyRef Name="Court_Number" />
+          </Key>
+          <Property Name="Court_Number" Type="int" Nullable="false" />
+          <Property Name="Court_Maintenance_Status" Type="varchar" MaxLength="6" />
+        </EntityType>
+        <EntityType Name="EVENT">
+          <Key>
+            <PropertyRef Name="Event_Number" />
+          </Key>
+          <Property Name="Event_Number" Type="int" Nullable="false" />
+          <Property Name="Register_Number" Type="int" />
+          <Property Name="Event_Date" Type="date" />
+          <Property Name="Number_Of_Players" Type="int" />
+        </EntityType>
+        <EntityType Name="REGISTER">
+          <Key>
+            <PropertyRef Name="Register_Number" />
+          </Key>
+          <Property Name="Register_Number" Type="int" Nullable="false" />
+          <Property Name="Client_ID" Type="varchar" MaxLength="20" />
+          <Property Name="Register_Date" Type="date" />
+        </EntityType>
+        <EntityType Name="TRANSACTION">
+          <Key>
+            <PropertyRef Name="Transaction_ID" />
+          </Key>
+          <Property Name="Transaction_ID" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="Assistant_ID" Type="varchar" MaxLength="20" />
+          <Property Name="Client_ID" Type="varchar" MaxLength="20" />
+          <Property Name="Price_Paid" Type="money" />
+          <Property Name="Paid_Date" Type="date" />
+        </EntityType>
+        <Association Name="FK1">
+          <End Role="ASSISTANT" Type="Self.ASSISTANT" Multiplicity="0..1" />
+          <End Role="BACKUP_DATA" Type="Self.BACKUP_DATA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ASSISTANT">
+              <PropertyRef Name="Assistant_ID" />
+            </Principal>
+            <Dependent Role="BACKUP_DATA">
+              <PropertyRef Name="Assistant_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK2">
+          <End Role="ASSISTANT" Type="Self.ASSISTANT" Multiplicity="0..1" />
+          <End Role="TRANSACTION" Type="Self.TRANSACTION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ASSISTANT">
+              <PropertyRef Name="Assistant_ID" />
+            </Principal>
+            <Dependent Role="TRANSACTION">
+              <PropertyRef Name="Assistant_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK3">
+          <End Role="CLIENT" Type="Self.CLIENT" Multiplicity="0..1" />
+          <End Role="TRANSACTION" Type="Self.TRANSACTION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLIENT">
+              <PropertyRef Name="Client_ID" />
+            </Principal>
+            <Dependent Role="TRANSACTION">
+              <PropertyRef Name="Client_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK4">
+          <End Role="CLIENT" Type="Self.CLIENT" Multiplicity="0..1" />
+          <End Role="REGISTER" Type="Self.REGISTER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLIENT">
+              <PropertyRef Name="Client_ID" />
+            </Principal>
+            <Dependent Role="REGISTER">
+              <PropertyRef Name="Client_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK5">
+          <End Role="REGISTER" Type="Self.REGISTER" Multiplicity="0..1" />
+          <End Role="EVENT" Type="Self.EVENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REGISTER">
+              <PropertyRef Name="Register_Number" />
+            </Principal>
+            <Dependent Role="EVENT">
+              <PropertyRef Name="Register_Number" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK6">
+          <End Role="CLIENT" Type="Self.CLIENT" Multiplicity="0..1" />
+          <End Role="BOOKING" Type="Self.BOOKING" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLIENT">
+              <PropertyRef Name="Client_ID" />
+            </Principal>
+            <Dependent Role="BOOKING">
+              <PropertyRef Name="Client_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK7">
+          <End Role="COURT" Type="Self.COURT" Multiplicity="0..1" />
+          <End Role="BOOKING" Type="Self.BOOKING" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="COURT">
+              <PropertyRef Name="Court_Number" />
+            </Principal>
+            <Dependent Role="BOOKING">
+              <PropertyRef Name="Court_Number" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK8">
+          <End Role="EVENT" Type="Self.EVENT" Multiplicity="0..1" />
+          <End Role="BOOKING" Type="Self.BOOKING" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EVENT">
+              <PropertyRef Name="Event_Number" />
+            </Principal>
+            <Dependent Role="BOOKING">
+              <PropertyRef Name="Event_Number" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ProjectModelStoreContainer">
+          <EntitySet Name="ASSISTANT" EntityType="Self.ASSISTANT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BACKUP_DATA" EntityType="Self.BACKUP_DATA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BOOKING" EntityType="Self.BOOKING" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CLIENT" EntityType="Self.CLIENT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="COURT" EntityType="Self.COURT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EVENT" EntityType="Self.EVENT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="REGISTER" EntityType="Self.REGISTER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TRANSACTION" EntityType="Self.TRANSACTION" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK1" Association="Self.FK1">
+            <End Role="ASSISTANT" EntitySet="ASSISTANT" />
+            <End Role="BACKUP_DATA" EntitySet="BACKUP_DATA" />
+          </AssociationSet>
+          <AssociationSet Name="FK2" Association="Self.FK2">
+            <End Role="ASSISTANT" EntitySet="ASSISTANT" />
+            <End Role="TRANSACTION" EntitySet="TRANSACTION" />
+          </AssociationSet>
+          <AssociationSet Name="FK3" Association="Self.FK3">
+            <End Role="CLIENT" EntitySet="CLIENT" />
+            <End Role="TRANSACTION" EntitySet="TRANSACTION" />
+          </AssociationSet>
+          <AssociationSet Name="FK4" Association="Self.FK4">
+            <End Role="CLIENT" EntitySet="CLIENT" />
+            <End Role="REGISTER" EntitySet="REGISTER" />
+          </AssociationSet>
+          <AssociationSet Name="FK5" Association="Self.FK5">
+            <End Role="REGISTER" EntitySet="REGISTER" />
+            <End Role="EVENT" EntitySet="EVENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK6" Association="Self.FK6">
+            <End Role="CLIENT" EntitySet="CLIENT" />
+            <End Role="BOOKING" EntitySet="BOOKING" />
+          </AssociationSet>
+          <AssociationSet Name="FK7" Association="Self.FK7">
+            <End Role="COURT" EntitySet="COURT" />
+            <End Role="BOOKING" EntitySet="BOOKING" />
+          </AssociationSet>
+          <AssociationSet Name="FK8" Association="Self.FK8">
+            <End Role="EVENT" EntitySet="EVENT" />
+            <End Role="BOOKING" EntitySet="BOOKING" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ProjectModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ASSISTANT">
+          <Key>
+            <PropertyRef Name="Assistant_ID" />
+          </Key>
+          <Property Name="Assistant_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Assistant_Name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Assistant_LastName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Assistant_RSA_ID" Type="String" MaxLength="13" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Assistant_Email" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Assistant_PhoneNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Assistant_Date_Appointed" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="BACKUP_DATA" Relationship="Self.FK1" FromRole="ASSISTANT" ToRole="BACKUP_DATA" />
+          <NavigationProperty Name="TRANSACTIONs" Relationship="Self.FK2" FromRole="ASSISTANT" ToRole="TRANSACTION" />
+        </EntityType>
+        <EntityType Name="BACKUP_DATA">
+          <Key>
+            <PropertyRef Name="Backup_ID" />
+          </Key>
+          <Property Name="Backup_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Assistant_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Backup_Time" Type="Time" Precision="7" />
+          <Property Name="Backup_Date" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="ASSISTANT" Relationship="Self.FK1" FromRole="BACKUP_DATA" ToRole="ASSISTANT" />
+        </EntityType>
+        <EntityType Name="BOOKING">
+          <Key>
+            <PropertyRef Name="Booking_Number" />
+          </Key>
+          <Property Name="Booking_Number" Type="Int32" Nullable="false" />
+          <Property Name="Client_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Court_Number" Type="Int32" />
+          <Property Name="Event_Number" Type="Int32" />
+          <Property Name="Number_Of_Bookings_Per_day" Type="Int32" />
+          <NavigationProperty Name="CLIENT" Relationship="Self.FK6" FromRole="BOOKING" ToRole="CLIENT" />
+          <NavigationProperty Name="COURT" Relationship="Self.FK7" FromRole="BOOKING" ToRole="COURT" />
+          <NavigationProperty Name="EVENT" Relationship="Self.FK8" FromRole="BOOKING" ToRole="EVENT" />
+        </EntityType>
+        <EntityType Name="CLIENT">
+          <Key>
+            <PropertyRef Name="Client_ID" />
+          </Key>
+          <Property Name="Client_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Client_Name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Client_LastName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Client_Email" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="Client_PhoneNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Client_Date_Joined" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="BOOKINGs" Relationship="Self.FK6" FromRole="CLIENT" ToRole="BOOKING" />
+          <NavigationProperty Name="TRANSACTIONs" Relationship="Self.FK3" FromRole="CLIENT" ToRole="TRANSACTION" />
+          <NavigationProperty Name="REGISTERs" Relationship="Self.FK4" FromRole="CLIENT" ToRole="REGISTER" />
+        </EntityType>
+        <EntityType Name="COURT">
+          <Key>
+            <PropertyRef Name="Court_Number" />
+          </Key>
+          <Property Name="Court_Number" Type="Int32" Nullable="false" />
+          <Property Name="Court_Maintenance_Status" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="BOOKINGs" Relationship="Self.FK7" FromRole="COURT" ToRole="BOOKING" />
+        </EntityType>
+        <EntityType Name="EVENT">
+          <Key>
+            <PropertyRef Name="Event_Number" />
+          </Key>
+          <Property Name="Event_Number" Type="Int32" Nullable="false" />
+          <Property Name="Register_Number" Type="Int32" />
+          <Property Name="Event_Date" Type="DateTime" Precision="0" />
+          <Property Name="Number_Of_Players" Type="Int32" />
+          <NavigationProperty Name="BOOKINGs" Relationship="Self.FK8" FromRole="EVENT" ToRole="BOOKING" />
+          <NavigationProperty Name="REGISTER" Relationship="Self.FK5" FromRole="EVENT" ToRole="REGISTER" />
+        </EntityType>
+        <EntityType Name="REGISTER">
+          <Key>
+            <PropertyRef Name="Register_Number" />
+          </Key>
+          <Property Name="Register_Number" Type="Int32" Nullable="false" />
+          <Property Name="Client_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Register_Date" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="CLIENT" Relationship="Self.FK4" FromRole="REGISTER" ToRole="CLIENT" />
+          <NavigationProperty Name="EVENTs" Relationship="Self.FK5" FromRole="REGISTER" ToRole="EVENT" />
+        </EntityType>
+        <EntityType Name="TRANSACTION">
+          <Key>
+            <PropertyRef Name="Transaction_ID" />
+          </Key>
+          <Property Name="Transaction_ID" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Assistant_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Client_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Price_Paid" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Paid_Date" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="ASSISTANT" Relationship="Self.FK2" FromRole="TRANSACTION" ToRole="ASSISTANT" />
+          <NavigationProperty Name="CLIENT" Relationship="Self.FK3" FromRole="TRANSACTION" ToRole="CLIENT" />
+        </EntityType>
+        <Association Name="FK1">
+          <End Role="ASSISTANT" Type="Self.ASSISTANT" Multiplicity="0..1" />
+          <End Role="BACKUP_DATA" Type="Self.BACKUP_DATA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ASSISTANT">
+              <PropertyRef Name="Assistant_ID" />
+            </Principal>
+            <Dependent Role="BACKUP_DATA">
+              <PropertyRef Name="Assistant_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK2">
+          <End Role="ASSISTANT" Type="Self.ASSISTANT" Multiplicity="0..1" />
+          <End Role="TRANSACTION" Type="Self.TRANSACTION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ASSISTANT">
+              <PropertyRef Name="Assistant_ID" />
+            </Principal>
+            <Dependent Role="TRANSACTION">
+              <PropertyRef Name="Assistant_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK6">
+          <End Role="CLIENT" Type="Self.CLIENT" Multiplicity="0..1" />
+          <End Role="BOOKING" Type="Self.BOOKING" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLIENT">
+              <PropertyRef Name="Client_ID" />
+            </Principal>
+            <Dependent Role="BOOKING">
+              <PropertyRef Name="Client_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK7">
+          <End Role="COURT" Type="Self.COURT" Multiplicity="0..1" />
+          <End Role="BOOKING" Type="Self.BOOKING" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="COURT">
+              <PropertyRef Name="Court_Number" />
+            </Principal>
+            <Dependent Role="BOOKING">
+              <PropertyRef Name="Court_Number" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK8">
+          <End Role="EVENT" Type="Self.EVENT" Multiplicity="0..1" />
+          <End Role="BOOKING" Type="Self.BOOKING" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EVENT">
+              <PropertyRef Name="Event_Number" />
+            </Principal>
+            <Dependent Role="BOOKING">
+              <PropertyRef Name="Event_Number" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK3">
+          <End Role="CLIENT" Type="Self.CLIENT" Multiplicity="0..1" />
+          <End Role="TRANSACTION" Type="Self.TRANSACTION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLIENT">
+              <PropertyRef Name="Client_ID" />
+            </Principal>
+            <Dependent Role="TRANSACTION">
+              <PropertyRef Name="Client_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK4">
+          <End Role="CLIENT" Type="Self.CLIENT" Multiplicity="0..1" />
+          <End Role="REGISTER" Type="Self.REGISTER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLIENT">
+              <PropertyRef Name="Client_ID" />
+            </Principal>
+            <Dependent Role="REGISTER">
+              <PropertyRef Name="Client_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK5">
+          <End Role="REGISTER" Type="Self.REGISTER" Multiplicity="0..1" />
+          <End Role="EVENT" Type="Self.EVENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REGISTER">
+              <PropertyRef Name="Register_Number" />
+            </Principal>
+            <Dependent Role="EVENT">
+              <PropertyRef Name="Register_Number" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ProjectEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ASSISTANTs" EntityType="Self.ASSISTANT" />
+          <EntitySet Name="BACKUP_DATA" EntityType="Self.BACKUP_DATA" />
+          <EntitySet Name="BOOKINGs" EntityType="Self.BOOKING" />
+          <EntitySet Name="CLIENTs" EntityType="Self.CLIENT" />
+          <EntitySet Name="COURTs" EntityType="Self.COURT" />
+          <EntitySet Name="EVENTs" EntityType="Self.EVENT" />
+          <EntitySet Name="REGISTERs" EntityType="Self.REGISTER" />
+          <EntitySet Name="TRANSACTIONs" EntityType="Self.TRANSACTION" />
+          <AssociationSet Name="FK1" Association="Self.FK1">
+            <End Role="ASSISTANT" EntitySet="ASSISTANTs" />
+            <End Role="BACKUP_DATA" EntitySet="BACKUP_DATA" />
+          </AssociationSet>
+          <AssociationSet Name="FK2" Association="Self.FK2">
+            <End Role="ASSISTANT" EntitySet="ASSISTANTs" />
+            <End Role="TRANSACTION" EntitySet="TRANSACTIONs" />
+          </AssociationSet>
+          <AssociationSet Name="FK6" Association="Self.FK6">
+            <End Role="CLIENT" EntitySet="CLIENTs" />
+            <End Role="BOOKING" EntitySet="BOOKINGs" />
+          </AssociationSet>
+          <AssociationSet Name="FK7" Association="Self.FK7">
+            <End Role="COURT" EntitySet="COURTs" />
+            <End Role="BOOKING" EntitySet="BOOKINGs" />
+          </AssociationSet>
+          <AssociationSet Name="FK8" Association="Self.FK8">
+            <End Role="EVENT" EntitySet="EVENTs" />
+            <End Role="BOOKING" EntitySet="BOOKINGs" />
+          </AssociationSet>
+          <AssociationSet Name="FK3" Association="Self.FK3">
+            <End Role="CLIENT" EntitySet="CLIENTs" />
+            <End Role="TRANSACTION" EntitySet="TRANSACTIONs" />
+          </AssociationSet>
+          <AssociationSet Name="FK4" Association="Self.FK4">
+            <End Role="CLIENT" EntitySet="CLIENTs" />
+            <End Role="REGISTER" EntitySet="REGISTERs" />
+          </AssociationSet>
+          <AssociationSet Name="FK5" Association="Self.FK5">
+            <End Role="REGISTER" EntitySet="REGISTERs" />
+            <End Role="EVENT" EntitySet="EVENTs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ProjectModelStoreContainer" CdmEntityContainer="ProjectEntities">
+          <EntitySetMapping Name="ASSISTANTs">
+            <EntityTypeMapping TypeName="ProjectModel.ASSISTANT">
+              <MappingFragment StoreEntitySet="ASSISTANT">
+                <ScalarProperty Name="Assistant_ID" ColumnName="Assistant_ID" />
+                <ScalarProperty Name="Assistant_Name" ColumnName="Assistant_Name" />
+                <ScalarProperty Name="Assistant_LastName" ColumnName="Assistant_LastName" />
+                <ScalarProperty Name="Assistant_RSA_ID" ColumnName="Assistant_RSA_ID" />
+                <ScalarProperty Name="Assistant_Email" ColumnName="Assistant_Email" />
+                <ScalarProperty Name="Assistant_PhoneNumber" ColumnName="Assistant_PhoneNumber" />
+                <ScalarProperty Name="Assistant_Date_Appointed" ColumnName="Assistant_Date_Appointed" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BACKUP_DATA">
+            <EntityTypeMapping TypeName="ProjectModel.BACKUP_DATA">
+              <MappingFragment StoreEntitySet="BACKUP_DATA">
+                <ScalarProperty Name="Backup_ID" ColumnName="Backup_ID" />
+                <ScalarProperty Name="Assistant_ID" ColumnName="Assistant_ID" />
+                <ScalarProperty Name="Backup_Time" ColumnName="Backup_Time" />
+                <ScalarProperty Name="Backup_Date" ColumnName="Backup_Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BOOKINGs">
+            <EntityTypeMapping TypeName="ProjectModel.BOOKING">
+              <MappingFragment StoreEntitySet="BOOKING">
+                <ScalarProperty Name="Booking_Number" ColumnName="Booking_Number" />
+                <ScalarProperty Name="Client_ID" ColumnName="Client_ID" />
+                <ScalarProperty Name="Court_Number" ColumnName="Court_Number" />
+                <ScalarProperty Name="Event_Number" ColumnName="Event_Number" />
+                <ScalarProperty Name="Number_Of_Bookings_Per_day" ColumnName="Number_Of_Bookings_Per_day" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CLIENTs">
+            <EntityTypeMapping TypeName="ProjectModel.CLIENT">
+              <MappingFragment StoreEntitySet="CLIENT">
+                <ScalarProperty Name="Client_ID" ColumnName="Client_ID" />
+                <ScalarProperty Name="Client_Name" ColumnName="Client_Name" />
+                <ScalarProperty Name="Client_LastName" ColumnName="Client_LastName" />
+                <ScalarProperty Name="Client_Email" ColumnName="Client_Email" />
+                <ScalarProperty Name="Client_PhoneNumber" ColumnName="Client_PhoneNumber" />
+                <ScalarProperty Name="Client_Date_Joined" ColumnName="Client_Date_Joined" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="COURTs">
+            <EntityTypeMapping TypeName="ProjectModel.COURT">
+              <MappingFragment StoreEntitySet="COURT">
+                <ScalarProperty Name="Court_Number" ColumnName="Court_Number" />
+                <ScalarProperty Name="Court_Maintenance_Status" ColumnName="Court_Maintenance_Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EVENTs">
+            <EntityTypeMapping TypeName="ProjectModel.EVENT">
+              <MappingFragment StoreEntitySet="EVENT">
+                <ScalarProperty Name="Event_Number" ColumnName="Event_Number" />
+                <ScalarProperty Name="Register_Number" ColumnName="Register_Number" />
+                <ScalarProperty Name="Event_Date" ColumnName="Event_Date" />
+                <ScalarProperty Name="Number_Of_Players" ColumnName="Number_Of_Players" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="REGISTERs">
+            <EntityTypeMapping TypeName="ProjectModel.REGISTER">
+              <MappingFragment StoreEntitySet="REGISTER">
+                <ScalarProperty Name="Register_Number" ColumnName="Register_Number" />
+                <ScalarProperty Name="Client_ID" ColumnName="Client_ID" />
+                <ScalarProperty Name="Register_Date" ColumnName="Register_Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TRANSACTIONs">
+            <EntityTypeMapping TypeName="ProjectModel.TRANSACTION">
+              <MappingFragment StoreEntitySet="TRANSACTION">
+                <ScalarProperty Name="Transaction_ID" ColumnName="Transaction_ID" />
+                <ScalarProperty Name="Assistant_ID" ColumnName="Assistant_ID" />
+                <ScalarProperty Name="Client_ID" ColumnName="Client_ID" />
+                <ScalarProperty Name="Price_Paid" ColumnName="Price_Paid" />
+                <ScalarProperty Name="Paid_Date" ColumnName="Paid_Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
